@@ -1,0 +1,393 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>QA.question &#8212; SMV Question Matching  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for QA.question</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">sql</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">wordnet</span> <span class="k">as</span> <span class="n">wn</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="k">import</span> <span class="n">Doc</span>
+<span class="kn">from</span> <span class="nn">spacy.vocab</span> <span class="k">import</span> <span class="n">Vocab</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="k">import</span> <span class="n">OperationalError</span>
+
+
+<span class="c1"># Update this variable whenever you add something to the Question class/remove something from it</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mf">1.1</span>
+
+
+<div class="viewcode-block" id="initialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.initialize">[docs]</a><span class="k">def</span> <span class="nf">initialize</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes SpaCy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">sNLP</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spaCy loading...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sNLP</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sNLP</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SpaCy could not load &#39;en&#39;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please ensure that en is downloaded run command:  python -m spacy download en&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spaCy loaded&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Dictionary to convert part-of-speech tags to wordnet parts of speech</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">tag_to_wn</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="Question"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question">[docs]</a><span class="k">class</span> <span class="nc">Question</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Question object containing information related to an entry in the QA database.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        question_string: the question itself</span>
+<span class="sd">        answer_string (str, optional): the answer to the question</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        question (str): The complete question.</span>
+<span class="sd">        answer (str): The complete answer to the question.</span>
+<span class="sd">        spacy (spacy.tokens.doc.Doc): SpaCy&#39;s internal representation of the question</span>
+<span class="sd">        spacy_stop_words (spacy.tokens.doc.Doc): SpaCy&#39;s internal representation of the question with stopwords removed</span>
+<span class="sd">        sig_word_set (set): set of all significant words in the question</span>
+<span class="sd">        sig_words (list): list of all significant words in their synset in the format</span>
+<span class="sd">            ``[[word, set(synset, synset, ...)], ...]``</span>
+<span class="sd">        pos (list): parts of speech associated with each word in the question</span>
+<span class="sd">        most_common_synsets (list): list containing the most common synset of the proper part of speech for each word of the question</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Question.process_text"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question.process_text">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">process_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        helper function to tokenize and lowercase an input string</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): input string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            set: Set of all words in string, converted to lowercase and with punctuation removed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Question.remove_stopwords"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question.remove_stopwords">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">remove_stopwords</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        helper function to remove stopwords (common words like &quot;the&quot; or &quot;of&quot;) from a set of tokens</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            words (iter): (set/list/anything with an iterator) of words</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: the input words with stopwords removed</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stopwords</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_string</span><span class="p">,</span> <span class="n">answer_string</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="c1"># the question nstring, stripped of extra space.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">question</span> <span class="o">=</span> <span class="n">question_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c1"># the answer to the question</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">answer</span> <span class="o">=</span> <span class="n">answer_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c1"># the spacy representation of the question</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacy</span> <span class="o">=</span> <span class="n">sNLP</span><span class="p">(</span><span class="n">question_string</span><span class="p">)</span>
+        <span class="c1"># a tokenized version of the question, meaning it is broken into a list of words.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_tokens</span> <span class="o">=</span> <span class="n">Question</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="n">question_string</span><span class="p">)</span>
+        <span class="c1"># a set version of the list of word tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_token_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Question</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="n">question_string</span><span class="p">))</span>
+        <span class="c1"># the list of word tokens with stop words removed, these are words with little lexical significance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacy_stop_words</span> <span class="o">=</span> <span class="n">sNLP</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Question</span><span class="o">.</span><span class="n">remove_stopwords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_tokens</span><span class="p">)))</span>
+
+        <span class="c1"># self.q_words = q_token_set &amp; {&#39;who&#39;, &#39;what&#39;, &#39;when&#39;, &#39;where&#39;, &#39;why&#39;, &#39;how&#39;, &#39;whose&#39;, &#39;whom&#39;,</span>
+        <span class="c1">#          &#39;which&#39;, &#39;can&#39;, &#39;whence&#39;, &#39;whether&#39;, &#39;do&#39;, &#39;have&#39;, &#39;did&#39;}</span>
+
+        <span class="c1">#a set version of the list of non stop words.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig_word_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Question</span><span class="o">.</span><span class="n">remove_stopwords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_token_set</span><span class="p">))</span>
+        <span class="c1"># a list of tuples as (word, {set of synsets}) for each significant word.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig_words</span> <span class="o">=</span> <span class="p">[[</span><span class="n">word</span><span class="p">,</span> <span class="nb">set</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">wn</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">word</span><span class="p">)])]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig_word_set</span><span class="p">]</span>
+        <span class="c1"># a list of words with part of speech tags.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_tokens</span><span class="p">)</span>
+        <span class="c1"># the most common synset for each word in the set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">most_common_synsets</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="n">wn</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tag_to_wn</span><span class="p">[</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="k">if</span>
+                                                   <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">tag_to_wn</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span> <span class="k">if</span> <span class="n">s</span><span class="p">]</span>
+        
+
+<div class="viewcode-block" id="Question.on_deserialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question.on_deserialize">[docs]</a>    <span class="k">def</span> <span class="nf">on_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called on deserializing. Converts synsets from plaintext to actual synset objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig_words</span><span class="p">:</span>
+            <span class="n">sw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">wn</span><span class="o">.</span><span class="n">synset</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">sw</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">most_common_synsets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">wn</span><span class="o">.</span><span class="n">synset</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_common_synsets</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Question.on_serialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question.on_serialize">[docs]</a>    <span class="k">def</span> <span class="nf">on_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called on serializing. Converts non-serializable synsets into serializable plaintext</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig_words</span><span class="p">:</span>
+            <span class="n">sw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">sw</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">most_common_synsets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_common_synsets</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Question.restore_after_serialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.Question.restore_after_serialize">[docs]</a>    <span class="k">def</span> <span class="nf">restore_after_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called after serialization is done, to get the Question back into a usable state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_deserialize</span><span class="p">()</span></div></div>
+ 
+
+<div class="viewcode-block" id="QuestionSet"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.QuestionSet">[docs]</a><span class="k">class</span> <span class="nc">QuestionSet</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A container for holding :class:`Question` objects</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        question_set (list): list of questions</span>
+<span class="sd">        sub_id (int): subject id</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        questions (list): List of all questions in the QuestionSet</span>
+<span class="sd">        sub_id (int): The subject id that the question set corresponds to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_set</span><span class="p">,</span> <span class="n">sub_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">questions</span> <span class="o">=</span> <span class="n">question_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_id</span> <span class="o">=</span> <span class="n">sub_id</span>
+
+<div class="viewcode-block" id="QuestionSet.from_db"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.QuestionSet.from_db">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_db</span><span class="p">(</span><span class="n">sub_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a QuestionSet using the database</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sub_id (int): the subject ID to generate a QuestionSet for</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuestionSet: The generated QuestionSet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QuestionSet</span><span class="p">([</span><span class="n">Question</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span> <span class="k">for</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="ow">in</span> <span class="n">sql</span><span class="o">.</span><span class="n">get_questions</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)],</span> <span class="n">sub_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QuestionSet.from_text"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.QuestionSet.from_text">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_text</span><span class="p">(</span><span class="n">question_file</span><span class="p">,</span> <span class="n">answer_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a QuestionSet from a text file by matching up a question file and an answer file line-by-line</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            question_file (str): the path of the file to use for questions</span>
+<span class="sd">            answer_file (str): the path of the file to use for answers</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuestionSet: the generated QuestionSet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">question_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">questions</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">answer_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">answers</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">QuestionSet</span><span class="p">([</span><span class="n">Question</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span> <span class="k">for</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">questions</span><span class="p">,</span> <span class="n">answers</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="QuestionSet.deserialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.QuestionSet.deserialize">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deserializes a QuestionSet from a serialized file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): the path of the serialized file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuestionSet: deserialized QuestionSet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">temp</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">on_deserialize</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">temp</span></div>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates an iterator for the QuestionSet</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">questions</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="QuestionSet.serialize"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.QuestionSet.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serializes a QuestionSet to a file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path: path for where to serialize QuestionSet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">on_serialize</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">restore_after_serialize</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="preprocess_db"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.preprocess_db">[docs]</a><span class="k">def</span> <span class="nf">preprocess_db</span><span class="p">(</span><span class="n">new_subjects_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">preprocess_everything</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sub_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocesses new categories and new/deleted/modified entries from the database</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        new_subjects_only (bool, optional): True to only preprocess new subjects, False to also look for changes in existing subjects. Defaults to False</span>
+<span class="sd">        preprocess_everything (bool, optional): True to preprocess everything, regardless of if it is new information or not. Defaults to False</span>
+<span class="sd">        sub_id (int, optional): If provided, will update only a specific subject</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        SQLError: If connecting to the database fails, database was never initialized, or sub_id is invalid. Check error message for more details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sub_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">subjects_db</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">get_subjects</span><span class="p">()</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subjects_db</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">get_subjects</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subjects_db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SQLError</span><span class="p">(</span><span class="s2">&quot;No subject with sub_id &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub_id</span><span class="p">))</span>
+        <span class="n">subjects_preprocessed</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>  <span class="c1"># outdated version</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Serialization version has changed to &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, preprocessing everything&quot;</span><span class="p">,</span>
+                          <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                    <span class="n">preprocess_everything</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No existing version file found, preprocessing everything&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">preprocess_everything</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">preprocess_everything</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s1">&#39;./preprocessed&#39;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="n">subjects_preprocessed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sub_id</span><span class="p">,</span> <span class="n">sub_name</span> <span class="ow">in</span> <span class="n">subjects_db</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;preprocessed/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">preprocess_everything</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subjects_preprocessed</span><span class="p">:</span>  <span class="c1"># if new subject not yet preprocessed</span>
+                <span class="n">QuestionSet</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New subject found with id &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, preprocessing subject&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">new_subjects_only</span><span class="p">:</span>  <span class="c1"># check for modified/new/deleted entries in db</span>
+                <span class="n">preprocessed</span> <span class="o">=</span> <span class="n">QuestionSet</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">changes_made</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">qs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">preprocessed</span><span class="o">.</span><span class="n">questions</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="ow">in</span> <span class="n">sql</span><span class="o">.</span><span class="n">get_questions</span><span class="p">(</span><span class="n">sub_id</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">matched</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">matched</span><span class="o">.</span><span class="n">question</span> <span class="o">==</span> <span class="n">question</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                            <span class="k">if</span> <span class="n">matched</span><span class="o">.</span><span class="n">answer</span> <span class="o">!=</span> <span class="n">answer</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                                <span class="n">matched</span><span class="o">.</span><span class="n">answer</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                                <span class="n">changes_made</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">qs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">matched</span><span class="p">)</span>
+                            <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># no match, new question</span>
+                        <span class="n">preprocessed</span><span class="o">.</span><span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Question</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">answer</span><span class="p">))</span>
+                        <span class="n">changes_made</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>  <span class="c1"># any questions left are ones that have been removed from the database</span>
+                    <span class="n">preprocessed</span><span class="o">.</span><span class="n">questions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">stored</span><span class="p">)</span>
+                    <span class="n">changes_made</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">changes_made</span><span class="p">:</span>
+                    <span class="n">preprocessed</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Changes made to subject &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; (&quot;</span> <span class="o">+</span> <span class="n">sub_name</span> <span class="o">+</span> <span class="s2">&quot;), reserializing&quot;</span><span class="p">,</span>
+                          <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">preprocess_everything</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database was never started successfully; cannot preprocess questions&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SQLError</span><span class="p">(</span><span class="s2">&quot;Database was never started successfully; cannot preprocess questions&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">OperationalError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t connect to database; cannot preprocess questions&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SQLError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t connect to database; cannot preprocess questions&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SQLError"><a class="viewcode-back" href="../../docs/source/QA.html#QA.question.SQLError">[docs]</a><span class="k">class</span> <span class="nc">SQLError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error with connecting to SQL database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1">#if __name__ == &quot;__main__&quot;:</span>
+    <span class="c1">#sql.initialize()</span>
+<span class="n">initialize</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Zach Brownlow, Christina Mara, Will Rea, Matt Rosenbloom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

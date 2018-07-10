@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Slim 3</title>
+        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='smvController.js') }}">></script>
+    </head>
+
+    <div ng-app="smvApp" ng-controller="smvController">
+    	<div class="title">Smart Q&amp;A</div>
+        <h1>Strategic Motion Video</h1>
+        <div class="questionContainer col-sm-12 col-md-8 container-fluid">
+               
+                 <div class="form-group row">
+                    <label for="question" class="col-sm-2 col-form-label">Subject</label>
+                    <div class="col-sm-10">
+                        <select ng-model="selectedQuestions" ng-options="set for set in questionSets"></select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="question" class="col-sm-2 col-form-label">Question</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="question" id="question" value="" placeholder="Ask your question here" required="required" ng-model="question">
+                    </div>
+                </div>
+                <div class="answerContainer col-sm-12 col-md-8 container-fluid" ng-model="result" ng-if="haveResults" ng-cloak  >
+                    <h2>Matched Question</h2>
+                    <div id="answer">~{result.results.spacy_synset_average.matched}~</div>
+                    <h2>Answer</h2>
+                    <div id="answer">~{result.results.spacy_synset_average.ans}~</div>
+                </div>
+                <div class="form-group row">
+                    <label for="debug" class="col-sm-10 col-form-label"><input type="checkbox" name="debug" id="debug" ng-model=debug> Show debugging info</label>
+                    <div class="col-sm-2 text-right">
+                        <button class="btn btn-primary" ng-click="askQuestion(selectedQuestions, question, debug, numResults)">Ask</button>
+                    </div>
+                </div>
+                 <div class="form-group row" ng-if="debug" ng-cloak>
+                    <label for="question" class="col-sm-2 col-form-label">Results</label>
+
+                    <div class="col-sm-10">
+                        <select ng-model="$parent.numResults" ng-options="v for v in range"></select>
+                    </div>
+                </div>
+                <div ng-cloak ng-if="debug && haveResults" ng-model="haveResults">
+                    Timers:
+                    <ul ng-model="result">
+                        <li ng-repeat="(key, value) in result.timers">~{key}~ : ~{value}~ seconds</li>
+                    </ul>
+                    <div ng-repeat="(key, value) in result.results"> Method: ~{key}~  
+                        </br> Confidence Cutoff: ~{value.cutoff}~ 
+                        </br> Matched: ~{value.matched}~  
+                        </br> Time: ~{value.time}~ 
+                        <table class="table table-inverse">
+                            <tr scope="row"> 
+                                <th>Match Confidence</th>
+                                <th>Match</th>
+                            </tr>
+                            <tr ng-repeat="row in value.matches" scope="row">
+                                <th>~{row.match}~</th>
+                                <th>~{row.question}~</th>
+                            </tr>
+                        </table>
+                       
+                    </div>
+
+                </div>
+  
+        </div>
+    </div>
+

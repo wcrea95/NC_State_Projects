@@ -1,0 +1,1978 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>QA package &#8212; SMV Question Matching  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="qa-package">
+<h1>QA package<a class="headerlink" href="#qa-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-QA.ExcelAutomation">
+<span id="qa-excelautomation-module"></span><h2>QA.ExcelAutomation module<a class="headerlink" href="#module-QA.ExcelAutomation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="QA.ExcelAutomation.confidence_analysis">
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">confidence_analysis</code><span class="sig-paren">(</span><em>cutOff</em>, <em>correctConf</em>, <em>incorrectConf</em>, <em>nonExistantConf</em>, <em>sign=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#confidence_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.ExcelAutomation.confidence_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>used to help determine the ideal confidence based on a set of responses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cutOff</strong> (<em>float</em>) – confidence cutoff</li>
+<li><strong>correctConf</strong> (<em>list</em>) – list of confidence values for correct answers as floats</li>
+<li><strong>incorrectConf</strong> (<em>list</em>) – list of confidence values for incorrect answers as floats</li>
+<li><strong>nonExistantConf</strong> (<em>list</em>) – list of confidence values for nonexistance answers as floats</li>
+<li><strong>sign</strong> (<em>int</em>) – 1 or -1 (-1 is an option because scipy has minimize but not maximize)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">accuracy of confidences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.ExcelAutomation.get_accuracies">
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">get_accuracies</code><span class="sig-paren">(</span><em>cutOff</em>, <em>correctConf</em>, <em>incorrectConf</em>, <em>nonExistantConf</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#get_accuracies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.ExcelAutomation.get_accuracies" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates the potential accuracy for a set of responses based on a confidence cutoff</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cutOff</strong> (<em>float</em>) – confidence cutoff to check</li>
+<li><strong>correctConf</strong> (<em>list</em>) – list of confidence values for correct answers as floats</li>
+<li><strong>incorrectConf</strong> (<em>list</em>) – list of confidence values for incorrect answers as floats</li>
+<li><strong>nonExistantConf</strong> (<em>list</em>) – list of confidence values for nonexistance answers as floats</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary with keys “Existing Accuracy” and “Non Existant Accuracy”</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.ExcelAutomation.get_answer">
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">get_answer</code><span class="sig-paren">(</span><em>userQuestion</em>, <em>method</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#get_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.ExcelAutomation.get_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a matching method’s answer to a particular question</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>userQuestion</strong> (<em>str</em>) – question to match</li>
+<li><strong>method</strong> (<a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><em>QA.qa.NLPMethod</em></a>) – matching method to use</li>
+<li><strong>category</strong> (<em>str</em>) – “frog” or “smv”</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">matched question, matched answer</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.ExcelAutomation.main">
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.ExcelAutomation.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run automated tests</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.config">
+<span id="qa-config-module"></span><h2>QA.config module<a class="headerlink" href="#module-QA.config" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="QA.config.combined_cutoffs">
+<code class="descclassname">QA.config.</code><code class="descname">combined_cutoffs</code><em class="property"> = {'exact': 0.29, 'most_common_synset_Wu_Palmer_similarity': 0.734, 'most_common_synset_path_similarity': 0.62, 'nb_b': 0.5, 'nb_g': 0.5, 'nb_m': 0.5, 'spacy': 0.818, 'spacy_exact_average': 0.61, 'spacy_synset_average': 0.5859, 'spacy_times_exact': 0.32, 'spacy_without_stopwords': 0.88, 'synset': 0.41, 'synset_path_similarity': 0.56, 'synset_wu_palmer_similarity': 0.73, 'tree': 0.5}</em><a class="headerlink" href="#QA.config.combined_cutoffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>these are the ideal confidence cutoffs when using both frog and SMV questions</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.connection_type">
+<code class="descclassname">QA.config.</code><code class="descname">connection_type</code><em class="property"> = 'PROD_FALLBACK_TEST'</em><a class="headerlink" href="#QA.config.connection_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Which DB to connect to</p>
+<dl class="docutils">
+<dt>Possible values:</dt>
+<dd><ul class="first last simple">
+<li>PRODUCTION</li>
+<li>TEST</li>
+<li>PROD_FALLBACK_TEST - try production, fallback to test if not available</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.data_generator_input_file">
+<code class="descclassname">QA.config.</code><code class="descname">data_generator_input_file</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/test_questions/test_questions_complete.csv'</em><a class="headerlink" href="#QA.config.data_generator_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>the file containing the est of test questions to be used for generating the training data
+using DataGenerator.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.data_generator_output_file">
+<code class="descclassname">QA.config.</code><code class="descname">data_generator_output_file</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/data_generator/data_complete.csv'</em><a class="headerlink" href="#QA.config.data_generator_output_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>the file name in which to store output of DataGenerator.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.data_generator_types">
+<code class="descclassname">QA.config.</code><code class="descname">data_generator_types</code><em class="property"> = ['spacy_synset_average', 'exact', 'synset', 'spacy', 'most_common_synset_path_similarity', 'most_common_synset_Wu_Palmer_similarity', 'spacy_subject', 'spacy_ind_object', 'spacy_dir_object']</em><a class="headerlink" href="#QA.config.data_generator_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>the set of algorithms to use for  DataGenerator.py, which creates training data for the decision tree
+using DataGenerator.py</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.frog_cutoffs">
+<code class="descclassname">QA.config.</code><code class="descname">frog_cutoffs</code><em class="property"> = {'exact': 0.335, 'most_common_synset_Wu_Palmer_similarity': 0.73125, 'most_common_synset_path_similarity': 0.6875, 'nb_b': 0.5, 'nb_g': 0.5, 'nb_m': 0.5, 'spacy': 0.815, 'spacy_exact_average': 0.61, 'spacy_synset_average': 0.645, 'spacy_times_exact': 0.32, 'spacy_without_stopwords': 0.88, 'synset': 0.56, 'synset_path_similarity': 0.56, 'synset_wu_palmer_similarity': 0.73, 'tree': 0.5}</em><a class="headerlink" href="#QA.config.frog_cutoffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>these are the ideal confidence cutoffs when using only the frog question set</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.production_database">
+<code class="descclassname">QA.config.</code><code class="descname">production_database</code><em class="property"> = 'mysql://root:smv&#64;localhost:3307/smvsdc'</em><a class="headerlink" href="#QA.config.production_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Link to production database</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.smv_cutoffs">
+<code class="descclassname">QA.config.</code><code class="descname">smv_cutoffs</code><em class="property"> = {'exact': 0.29, 'most_common_synset_Wu_Palmer_similarity': 0.735, 'most_common_synset_path_similarity': 0.605, 'spacy': 0.778125, 'spacy_exact_average': 0.49, 'spacy_synset_average': 0.51875, 'spacy_times_exact': 0.215625, 'spacy_without_stopwords': 0.85, 'synset': 0.40625, 'synset_path_similarity': 0.56, 'synset_wu_palmer_similarity': 0.73}</em><a class="headerlink" href="#QA.config.smv_cutoffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>these are the ideal confidence cutoffs when using only the SMV question set</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.test_database">
+<code class="descclassname">QA.config.</code><code class="descname">test_database</code><em class="property"> = 'mysql://root:smv&#64;localhost:3306/smvsdc'</em><a class="headerlink" href="#QA.config.test_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Link to test database</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.test_output">
+<code class="descclassname">QA.config.</code><code class="descname">test_output</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/test_output/results.csv'</em><a class="headerlink" href="#QA.config.test_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>output file for ExcelAutomation.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.test_output_accuracy">
+<code class="descclassname">QA.config.</code><code class="descname">test_output_accuracy</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/test_output/accuracies.csv'</em><a class="headerlink" href="#QA.config.test_output_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>output for test accuracies from ExcelAutomation.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.test_output_stats">
+<code class="descclassname">QA.config.</code><code class="descname">test_output_stats</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/test_output/stats.csv'</em><a class="headerlink" href="#QA.config.test_output_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>output for test stats from ExcelAutomation.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.test_questions_input">
+<code class="descclassname">QA.config.</code><code class="descname">test_questions_input</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/test_questions/test_questions_complete.csv'</em><a class="headerlink" href="#QA.config.test_questions_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>input file for ExcelAutomation.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.train_tree_input_file">
+<code class="descclassname">QA.config.</code><code class="descname">train_tree_input_file</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/data_generator/data_complete.csv'</em><a class="headerlink" href="#QA.config.train_tree_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>the input file for the TrainTree.py utility.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.config.tree_model_data">
+<code class="descclassname">QA.config.</code><code class="descname">tree_model_data</code><em class="property"> = 'C:\\Users\\Zach\\PycharmProjects\\2018SpringTeam30\\QA\\data/data_generator/data_complete.csv'</em><a class="headerlink" href="#QA.config.tree_model_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>the data to use for training the tree used in qa.py.</p>
+<p>If viewing this on the web API documentation, the start of this variable is the absolute path to the
+file on the computer that generated the documentation. This first half is automatically generated
+and will provide a different path on most computers, but the second half is what is actually manually
+set.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.qa">
+<span id="qa-qa-module"></span><h2>QA.qa module<a class="headerlink" href="#module-QA.qa" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="QA.qa.DecisionTree">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">DecisionTree</code><a class="reference internal" href="../../_modules/QA/qa.html#DecisionTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.DecisionTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod uses the decision tree trained in gen_tree to classify all potential matches based on the
+input queston and questions in the question DB. An issue with this method is that if more than one pair
+are classified as a match (value = 1) then the match which comes first in the sorted order is selected.</p>
+<p>Data is trained in <a class="reference internal" href="#QA.qa.gen_tree" title="QA.qa.gen_tree"><code class="xref any py py-func docutils literal notranslate"><span class="pre">gen_tree</span></code></a>. The model for this decision tree classifier is <a class="reference internal" href="#QA.qa.dt" title="QA.qa.dt"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.dt</span></code></a>.</p>
+<dl class="method">
+<dt id="QA.qa.DecisionTree.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#DecisionTree.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.DecisionTree.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.Distance">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">Distance</code><a class="reference internal" href="../../_modules/QA/qa.html#Distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Calculates edit distance between two questions. Edit distance is the amount of changes it takes to get from one
+string to another. This is the Levenhstein edit distance, which deals with single characters at a time. It does
+not seem like it’s actually helpful here.</p>
+<p>match_prob returns the inverse of edit distance so it can still be sorted in descending order (high edit distance =
+low match probability)</p>
+<dl class="method">
+<dt id="QA.qa.Distance.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#Distance.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Distance.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.Exact">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">Exact</code><a class="reference internal" href="../../_modules/QA/qa.html#Exact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Exact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Matches questions based on shared keywords, only taking exact matches into account.</p>
+<p>In the sentences “John had a cow” and “John had two cows”, “John” would match, but “cow” would not match “cows”
+because the words are not exactly the same.</p>
+<dl class="method">
+<dt id="QA.qa.Exact.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#Exact.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Exact.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.MostCommonSynsetPathSimilarity">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">MostCommonSynsetPathSimilarity</code><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetPathSimilarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetPathSimilarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Like <a class="reference internal" href="#QA.qa.SynsetPathSimilarity" title="QA.qa.SynsetPathSimilarity"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynsetPathSimilarity</span></code></a>, but only compares the most common Synset for each word instead of checking all possible
+synsets for a word.</p>
+<p>Based off of <a class="reference external" href="http://nlpforhackers.io/wordnet-sentence-similarity/">http://nlpforhackers.io/wordnet-sentence-similarity/</a></p>
+<dl class="method">
+<dt id="QA.qa.MostCommonSynsetPathSimilarity.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetPathSimilarity.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetPathSimilarity.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.qa.MostCommonSynsetPathSimilarity.match_prob_oneway">
+<code class="descname">match_prob_oneway</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetPathSimilarity.match_prob_oneway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetPathSimilarity.match_prob_oneway" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.MostCommonSynsetWuPalmerSimilarity">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">MostCommonSynsetWuPalmerSimilarity</code><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetWuPalmerSimilarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetWuPalmerSimilarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Like <a class="reference internal" href="#QA.qa.SynsetWuPalmerSimilarity" title="QA.qa.SynsetWuPalmerSimilarity"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynsetWuPalmerSimilarity</span></code></a>, but only compares the most common Synset for each word instead of checking
+all possible synsets for a word.</p>
+<p>Based off of <a class="reference external" href="http://nlpforhackers.io/wordnet-sentence-similarity/">http://nlpforhackers.io/wordnet-sentence-similarity/</a></p>
+<dl class="method">
+<dt id="QA.qa.MostCommonSynsetWuPalmerSimilarity.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetWuPalmerSimilarity.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetWuPalmerSimilarity.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.qa.MostCommonSynsetWuPalmerSimilarity.match_prob_oneway">
+<code class="descname">match_prob_oneway</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#MostCommonSynsetWuPalmerSimilarity.match_prob_oneway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.MostCommonSynsetWuPalmerSimilarity.match_prob_oneway" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.NB_B">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">NB_B</code><a class="reference internal" href="../../_modules/QA/qa.html#NB_B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NB_B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This method uses a Bernoulli Naive Bayes Classifier to predict if the questions are the same or not, based
+on the same training data used for <a class="reference internal" href="#QA.qa.DecisionTree" title="QA.qa.DecisionTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTree</span></code></a> in <a class="reference internal" href="#QA.qa.gen_tree" title="QA.qa.gen_tree"><code class="xref any py py-func docutils literal notranslate"><span class="pre">gen_tree</span></code></a>. The model for this classifier
+is <a class="reference internal" href="#QA.qa.nb_b" title="QA.qa.nb_b"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.nb_b</span></code></a>.</p>
+<dl class="method">
+<dt id="QA.qa.NB_B.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#NB_B.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NB_B.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.NB_G">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">NB_G</code><a class="reference internal" href="../../_modules/QA/qa.html#NB_G"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NB_G" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This method uses a Gaussian Naive Bayes Classifier to predict if the questions are the same or not, based
+on the same training data used for <a class="reference internal" href="#QA.qa.DecisionTree" title="QA.qa.DecisionTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTree</span></code></a> in <a class="reference internal" href="#QA.qa.gen_tree" title="QA.qa.gen_tree"><code class="xref any py py-func docutils literal notranslate"><span class="pre">gen_tree</span></code></a>. The model for this classifier
+is <a class="reference internal" href="#QA.qa.nb_g" title="QA.qa.nb_g"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.nb_g</span></code></a>.</p>
+<dl class="method">
+<dt id="QA.qa.NB_G.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#NB_G.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NB_G.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.NLPMethod">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">NLPMethod</code><a class="reference internal" href="../../_modules/QA/qa.html#NLPMethod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NLPMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract class to extend to create a matching technique.</p>
+<dl class="staticmethod">
+<dt id="QA.qa.NLPMethod.gen_results">
+<em class="property">static </em><code class="descname">gen_results</code><span class="sig-paren">(</span><em>p_time</em>, <em>debug</em>, <em>cutoff</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#NLPMethod.gen_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NLPMethod.gen_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the matches as a dictionary formatted as follows:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>{</dt>
+<dd><p class="first">“matched”: &lt;question that is the best match, or “No answer matched.”&gt;,</p>
+<p>“ans”: &lt;answer to best matched question, or “No answer matched.”&gt;,</p>
+<p>“time”: &lt;time taken to run this method&gt;,</p>
+<p>“cutoff”: &lt;the cutoff used to determine if a match is actually an answer&gt;,</p>
+<p>“matches”: [</p>
+<blockquote>
+<div><p>{&lt;match_prob&gt;, &lt;matched question&gt;</p>
+<blockquote>
+<div><p>“match”: &lt;match confidence&gt;,</p>
+<p>“question”: &lt;matched question&gt;</p>
+</div></blockquote>
+</div></blockquote>
+<p class="last">]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>the “matches” part of the dictionary is only included if debug is set to True</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>matches</strong> (<em>list</em>) – list of matches in format <code class="docutils literal notranslate"><span class="pre">[(&lt;match_probability&gt;,</span> <span class="pre">&lt;Question&gt;),</span> <span class="pre">...]</span></code> sorted by best answer
+first (highest probability first)</li>
+<li><strong>p_time</strong> (<em>float</em>) – time it took to process the results</li>
+<li><strong>debug</strong> (<em>bool</em>) – whether to show debug information or not</li>
+<li><strong>cutoff</strong> (<em>float</em>) – the cutoff for determining if an answer exists</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the formatted list of matches</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.qa.NLPMethod.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#NLPMethod.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NLPMethod.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.qa.NLPMethod.run_method">
+<code class="descname">run_method</code><span class="sig-paren">(</span><em>question</em>, <em>db</em>, <em>debug</em>, <em>top_n=5</em>, <em>cutoff=0.0</em>, <em>sorted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#NLPMethod.run_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.NLPMethod.run_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the NLPMethod and determines the best matches, if any</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question</strong> (<em>str</em>) – the user question being asked</li>
+<li><strong>db</strong> (<a class="reference internal" href="#QA.question.QuestionSet" title="QA.question.QuestionSet"><em>QuestionSet</em></a>) – the set of questions to compare against</li>
+<li><strong>debug</strong> (<em>bool</em>) – whether or not to return debugging info</li>
+<li><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – the amount of results to show in debugging info. Defaults to 5</li>
+<li><strong>cutoff</strong> (<em>float</em><em>, </em><em>optional</em>) – the cutoff used to determine if a match is actually an answer or not.
+Defaults to 0, meaning that every match will be considered an answer by default.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the formatted list of matches, formatted as shown in NLPMethod.gen_results</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.Spacy">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">Spacy</code><a class="reference internal" href="../../_modules/QA/qa.html#Spacy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Spacy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod uses SpaCy’s .similarity method. This uses the cosine similarity of word vectors. Honestly we’re not
+sure exactly how it works, but it seems to be a rather effective way of determining sentence similarity.</p>
+<dl class="method">
+<dt id="QA.qa.Spacy.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#Spacy.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.Spacy.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacyDirectObject">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacyDirectObject</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacyDirectObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyDirectObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod looks at the subjects of both sentences, as identified by SpaCy, and then returns a score based on
+if there are any subjects in common.</p>
+<p>“John ate a banana” and “John went to the store” would return a probability of 1.0 here because “John” is the
+subject of both. On the other hand, “John ate a banana” and “A banana ate John” would return a probability of 0
+because the subject of the first sentence is “John” while the subject of the second is “banana”.</p>
+<dl class="method">
+<dt id="QA.qa.SpacyDirectObject.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacyDirectObject.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyDirectObject.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacyExactAvg">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacyExactAvg</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacyExactAvg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyExactAvg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod averages the results from <a class="reference internal" href="#QA.qa.Spacy" title="QA.qa.Spacy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spacy</span></code></a> with the results from <a class="reference internal" href="#QA.qa.Exact" title="QA.qa.Exact"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exact</span></code></a></p>
+<dl class="method">
+<dt id="QA.qa.SpacyExactAvg.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacyExactAvg.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyExactAvg.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacyIndirectObject">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacyIndirectObject</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacyIndirectObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyIndirectObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod looks at the subjects of both sentences, as identified by SpaCy, and then returns a score based on
+if there are any subjects in common.</p>
+<p>“John ate a banana” and “John went to the store” would return a probability of 1.0 here because “John” is the
+subject of both. On the other hand, “John ate a banana” and “A banana ate John” would return a probability of 0
+because the subject of the first sentence is “John” while the subject of the second is “banana”.</p>
+<dl class="method">
+<dt id="QA.qa.SpacyIndirectObject.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacyIndirectObject.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyIndirectObject.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacySubject">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacySubject</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacySubject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacySubject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod looks at the subjects of both sentences, as identified by SpaCy, and then returns a score based on
+if there are any subjects in common.</p>
+<p>“John ate a banana” and “John went to the store” would return a probability of 1.0 here because “John” is the
+subject of both. On the other hand, “John ate a banana” and “A banana ate John” would return a probability of 0
+because the subject of the first sentence is “John” while the subject of the second is “banana”.</p>
+<dl class="method">
+<dt id="QA.qa.SpacySubject.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacySubject.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacySubject.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacySynsetAvg">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacySynsetAvg</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacySynsetAvg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacySynsetAvg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod averages the results from <a class="reference internal" href="#QA.qa.Spacy" title="QA.qa.Spacy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spacy</span></code></a> and those from <a class="reference internal" href="#QA.qa.SynsetMatch" title="QA.qa.SynsetMatch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynsetMatch</span></code></a></p>
+<dl class="method">
+<dt id="QA.qa.SpacySynsetAvg.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacySynsetAvg.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacySynsetAvg.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacyTimesExact">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacyTimesExact</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacyTimesExact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyTimesExact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod multiplies the results from <a class="reference internal" href="#QA.qa.Spacy" title="QA.qa.Spacy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spacy</span></code></a> with those from <a class="reference internal" href="#QA.qa.Exact" title="QA.qa.Exact"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exact</span></code></a></p>
+<dl class="method">
+<dt id="QA.qa.SpacyTimesExact.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacyTimesExact.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyTimesExact.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SpacyTwo">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SpacyTwo</code><a class="reference internal" href="../../_modules/QA/qa.html#SpacyTwo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyTwo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod is the same as the <a class="reference internal" href="#QA.qa.Spacy" title="QA.qa.Spacy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spacy</span></code></a> NLPMethod, except it removes all stopwords before doing any
+processing. Stopwords are common words like “the” or “of”.</p>
+<dl class="method">
+<dt id="QA.qa.SpacyTwo.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SpacyTwo.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SpacyTwo.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SynsetMatch">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SynsetMatch</code><a class="reference internal" href="../../_modules/QA/qa.html#SynsetMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Matches questions based on shared keywords, taking synonyms into account. A synset is a grouping of all synonyms
+with a particular definition. Stemming is also taken into account (reducing a word to its base form, so
+“pancakes” becomes “pancake” and “devouring” becomes “devour”).</p>
+<p>In the sentences “How much is car insurance” and “How much is automobile insurance”, “car” and “automobile” should
+match because they are synonyms. The other words should still match as well. The match for the word “insurance”,
+however, adds more to the similarity score than the match between “car” and “automobile” because it is an exact
+match.</p>
+<p>In the sentences “What would a carnivore be eating” and “What do carnivores eat”, “carnivore” matches with
+“carnivores” because they have the same stem. In addition, “eating” matches with “eat” for the same reason.</p>
+<p>Synonyms and stems are found using NLTK’s Wordnet corpus.</p>
+<p>It is important to note that some words might match up with several synsets. “Whale”, for example, matches with the
+synset for the animal as well as the synset “giant.n.04” (words meaning “a very large person; impressive in size
+or qualities”). For this NLPMethod, all synsets that match up with a word are checked, meaning it will check
+against both “giant” and “whale”.</p>
+<dl class="method">
+<dt id="QA.qa.SynsetMatch.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SynsetMatch.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetMatch.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SynsetPathSimilarity">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SynsetPathSimilarity</code><a class="reference internal" href="../../_modules/QA/qa.html#SynsetPathSimilarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetPathSimilarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Compares two questions using path similarity between words. This uses synsets, which are groups of synonyms with the
+same definition. Synsets are an element of the NLTK Wordnet corpus. In it, there is a tree of all (well, most)
+synsets in the English language. In this tree, you might have something like the following (which is a real
+subset of the Wordnet tree):</p>
+<dl class="docutils">
+<dt>defender.n.01</dt>
+<dd><p class="first">-&gt; fireman.n.04</p>
+<dl class="last docutils">
+<dt>-&gt; lawman.n.01</dt>
+<dd>-&gt; policeman.n.01</dd>
+</dl>
+</dd>
+</dl>
+<p>In this tree, calculating path similarity involves computing the shortest number of edges to get from one synset to
+another. So in this example tree, “fireman” and “policeman” are close together, and would thus have a higher
+path similarity than “fireman” and “killer whale” (not shown in this tree because it’s really far away)</p>
+<p>It is important to note that some words might match up with several synsets. “Whale”, for example, matches with the
+synset for the animal as well as the synset for “giant” (meaning “a very large person; impressive in size or
+qualities”). For this NLPMethod, all synsets that match up with a word are checked, meaning it will check
+against both “giant” and “whale”.</p>
+<dl class="method">
+<dt id="QA.qa.SynsetPathSimilarity.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SynsetPathSimilarity.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetPathSimilarity.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.SynsetWuPalmerSimilarity">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">SynsetWuPalmerSimilarity</code><a class="reference internal" href="../../_modules/QA/qa.html#SynsetWuPalmerSimilarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetWuPalmerSimilarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>Like <a class="reference internal" href="#QA.qa.SynsetPathSimilarity" title="QA.qa.SynsetPathSimilarity"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynsetPathSimilarity</span></code></a>, but with a different kind of similarity called Wu-Palmer Similarity. Wu-Palmer
+similarity is very similar to Path Similarity, except in the fact that it weights edges in the graph when
+calculating similarity values.</p>
+<dl class="method">
+<dt id="QA.qa.SynsetWuPalmerSimilarity.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#SynsetWuPalmerSimilarity.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.SynsetWuPalmerSimilarity.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.qa.ThreeWayAverage">
+<em class="property">class </em><code class="descclassname">QA.qa.</code><code class="descname">ThreeWayAverage</code><a class="reference internal" href="../../_modules/QA/qa.html#ThreeWayAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.ThreeWayAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<p>This NLPMethod averages the results from <a class="reference internal" href="#QA.qa.Spacy" title="QA.qa.Spacy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spacy</span></code></a>, <a class="reference internal" href="#QA.qa.MostCommonSynsetPathSimilarity" title="QA.qa.MostCommonSynsetPathSimilarity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MostCommonSynsetPathSimilarity</span></code></a> and those from <a class="reference internal" href="#QA.qa.SynsetMatch" title="QA.qa.SynsetMatch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SynsetMatch</span></code></a></p>
+<dl class="method">
+<dt id="QA.qa.ThreeWayAverage.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#ThreeWayAverage.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.ThreeWayAverage.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.qa.cutoffs">
+<code class="descclassname">QA.qa.</code><code class="descname">cutoffs</code><em class="property"> = {'exact': 0.29, 'most_common_synset_Wu_Palmer_similarity': 0.734, 'most_common_synset_path_similarity': 0.62, 'nb_b': 0.5, 'nb_g': 0.5, 'nb_m': 0.5, 'spacy': 0.818, 'spacy_exact_average': 0.61, 'spacy_synset_average': 0.5859, 'spacy_times_exact': 0.32, 'spacy_without_stopwords': 0.88, 'synset': 0.41, 'synset_path_similarity': 0.56, 'synset_wu_palmer_similarity': 0.73, 'tree': 0.5}</em><a class="headerlink" href="#QA.qa.cutoffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>confidence cutoffs for if answer exists or not</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.qa.dt">
+<code class="descclassname">QA.qa.</code><code class="descname">dt</code><em class="property"> = DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=4,             max_features=None, max_leaf_nodes=None,             min_impurity_decrease=0.0, min_impurity_split=None,             min_samples_leaf=1, min_samples_split=40,             min_weight_fraction_leaf=0.0, presort=False, random_state=52,             splitter='best')</em><a class="headerlink" href="#QA.qa.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model for decision tree learning/classification</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.gen_tree">
+<code class="descclassname">QA.qa.</code><code class="descname">gen_tree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#gen_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.gen_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the tree model data for <a class="reference internal" href="#QA.qa.dt" title="QA.qa.dt"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.dt</span></code></a> based on <a class="reference internal" href="#QA.config.tree_model_data" title="QA.config.tree_model_data"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.config.tree_model_data</span></code></a>. Also generates
+data for <a class="reference internal" href="#QA.qa.nb_g" title="QA.qa.nb_g"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.nb_g</span></code></a> and <a class="reference internal" href="#QA.qa.nb_b" title="QA.qa.nb_b"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.nb_b</span></code></a> based on that same data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.get_answer">
+<code class="descclassname">QA.qa.</code><code class="descname">get_answer</code><span class="sig-paren">(</span><em>userQuestion</em>, <em>method</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#get_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.get_answer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.get_question_sets">
+<code class="descclassname">QA.qa.</code><code class="descname">get_question_sets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#get_question_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.get_question_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all preprocessed subjects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">all preprocessed subjects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">generator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.get_response">
+<code class="descclassname">QA.qa.</code><code class="descname">get_response</code><span class="sig-paren">(</span><em>inp_question</em>, <em>debug</em>, <em>subject</em>, <em>top_n=None</em>, <em>algorithms=None</em>, <em>sorted=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#get_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.get_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the data for the best possible match given a user question</p>
+<dl class="docutils">
+<dt>Output format:</dt>
+<dd><dl class="first docutils">
+<dt>{</dt>
+<dd><dl class="first docutils">
+<dt>‘results’: {</dt>
+<dd>&lt;method name&gt;: &lt;output from NLPMethod.run_method&gt;,
+…</dd>
+</dl>
+<p>},
+‘timers’: {</p>
+<blockquote>
+<div><p>‘preprocessingTime’: &lt;time&gt;,</p>
+<p>‘processingTime’: &lt;time&gt;,</p>
+<p>‘overallTime’: &lt;preprocessingTime + processingTime&gt;</p>
+</div></blockquote>
+<p class="last">},
+‘inp_question’: &lt;user question&gt;
+‘debug’: &lt;debug&gt;</p>
+</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp_question</strong> (<em>str</em>) – the user-inputted question</li>
+<li><strong>debug</strong> (<em>bool</em>) – whether or not to show debug information</li>
+<li><strong>subject</strong> (<em>int</em>) – the subject id to compare the question against</li>
+<li><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – the number of results to show in debug information</li>
+<li><strong>algorithms</strong> (<em>list</em><em>, </em><em>optional</em>) – a list of algorithms to use, as described in the global variable <a class="reference internal" href="#QA.qa.methods" title="QA.qa.methods"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.qa.methods</span></code></a>
+(Defaults to running all methods)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Lots of data regarding the matches found</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.main">
+<code class="descclassname">QA.qa.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>When qa.py is run on its own, the user can enter a question in the console and see the result with debugging.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.qa.methods">
+<code class="descclassname">QA.qa.</code><code class="descname">methods</code><em class="property"> = {'exact': &lt;QA.qa.Exact object at 0x000000143A02B5F8&gt;, 'most_common_synset_Wu_Palmer_similarity': &lt;QA.qa.MostCommonSynsetWuPalmerSimilarity object at 0x000000143A02B6D8&gt;, 'most_common_synset_path_similarity': &lt;QA.qa.MostCommonSynsetPathSimilarity object at 0x000000143A02B6A0&gt;, 'nb_b': &lt;QA.qa.NB_B object at 0x000000143A02B588&gt;, 'nb_g': &lt;QA.qa.NB_G object at 0x000000143A02B550&gt;, 'spacy': &lt;QA.qa.Spacy object at 0x000000143A02B668&gt;, 'spacy_dir_object': &lt;QA.qa.SpacyDirectObject object at 0x000000143A02B748&gt;, 'spacy_ind_object': &lt;QA.qa.SpacyIndirectObject object at 0x000000143A02B780&gt;, 'spacy_subject': &lt;QA.qa.SpacySubject object at 0x000000143A02B710&gt;, 'spacy_synset_average': &lt;QA.qa.SpacySynsetAvg object at 0x000000143A02B5C0&gt;, 'synset': &lt;QA.qa.SynsetMatch object at 0x000000143A02B630&gt;, 'tree': &lt;QA.qa.DecisionTree object at 0x000000143A02B518&gt;}</em><a class="headerlink" href="#QA.qa.methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a dictionary of all matching techniques that the program can use. Keys are what is used to specify what
+techniques to use, whereas values are instances of the actual technique classes themselves.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.qa.nb_b">
+<code class="descclassname">QA.qa.</code><code class="descname">nb_b</code><em class="property"> = BernoulliNB(alpha=1.0, binarize=0.0, class_prior=None, fit_prior=True)</em><a class="headerlink" href="#QA.qa.nb_b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model for Bernoulli naive bayes learning/classification</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.qa.nb_g">
+<code class="descclassname">QA.qa.</code><code class="descname">nb_g</code><em class="property"> = GaussianNB(priors=None)</em><a class="headerlink" href="#QA.qa.nb_g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model for Gaussian naive bayes learning/classification</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.qa.preprocess">
+<code class="descclassname">QA.qa.</code><code class="descname">preprocess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/qa.html#preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.qa.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does any necessary preprocessing for qa to start.</p>
+<p>All this now entails is a call to question.preprocess_db</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.question">
+<span id="qa-question-module"></span><h2>QA.question module<a class="headerlink" href="#module-QA.question" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="QA.question.Question">
+<em class="property">class </em><code class="descclassname">QA.question.</code><code class="descname">Question</code><span class="sig-paren">(</span><em>question_string</em>, <em>answer_string=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Question object containing information related to an entry in the QA database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>question_string</strong> – the question itself</li>
+<li><strong>answer_string</strong> (<em>str</em><em>, </em><em>optional</em>) – the answer to the question</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="QA.question.Question.question">
+<code class="descname">question</code><a class="headerlink" href="#QA.question.Question.question" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – The complete question.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.answer">
+<code class="descname">answer</code><a class="headerlink" href="#QA.question.Question.answer" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – The complete answer to the question.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.spacy">
+<code class="descname">spacy</code><a class="headerlink" href="#QA.question.Question.spacy" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>spacy.tokens.doc.Doc</em> – SpaCy’s internal representation of the question</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.spacy_stop_words">
+<code class="descname">spacy_stop_words</code><a class="headerlink" href="#QA.question.Question.spacy_stop_words" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>spacy.tokens.doc.Doc</em> – SpaCy’s internal representation of the question with stopwords removed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.sig_word_set">
+<code class="descname">sig_word_set</code><a class="headerlink" href="#QA.question.Question.sig_word_set" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>set</em> – set of all significant words in the question</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.sig_words">
+<code class="descname">sig_words</code><a class="headerlink" href="#QA.question.Question.sig_words" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list</em> – list of all significant words in their synset in the format
+<code class="docutils literal notranslate"><span class="pre">[[word,</span> <span class="pre">set(synset,</span> <span class="pre">synset,</span> <span class="pre">...)],</span> <span class="pre">...]</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.pos">
+<code class="descname">pos</code><a class="headerlink" href="#QA.question.Question.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list</em> – parts of speech associated with each word in the question</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.Question.most_common_synsets">
+<code class="descname">most_common_synsets</code><a class="headerlink" href="#QA.question.Question.most_common_synsets" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list</em> – list containing the most common synset of the proper part of speech for each word of the question</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.question.Question.on_deserialize">
+<code class="descname">on_deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question.on_deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question.on_deserialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called on deserializing. Converts synsets from plaintext to actual synset objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.question.Question.on_serialize">
+<code class="descname">on_serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question.on_serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question.on_serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called on serializing. Converts non-serializable synsets into serializable plaintext</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="QA.question.Question.process_text">
+<em class="property">static </em><code class="descname">process_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question.process_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question.process_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper function to tokenize and lowercase an input string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – input string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Set of all words in string, converted to lowercase and with punctuation removed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="QA.question.Question.remove_stopwords">
+<em class="property">static </em><code class="descname">remove_stopwords</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question.remove_stopwords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question.remove_stopwords" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper function to remove stopwords (common words like “the” or “of”) from a set of tokens</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>words</strong> (<em>iter</em>) – (set/list/anything with an iterator) of words</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the input words with stopwords removed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.question.Question.restore_after_serialize">
+<code class="descname">restore_after_serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#Question.restore_after_serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.Question.restore_after_serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called after serialization is done, to get the Question back into a usable state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.question.QuestionSet">
+<em class="property">class </em><code class="descclassname">QA.question.</code><code class="descname">QuestionSet</code><span class="sig-paren">(</span><em>question_set</em>, <em>sub_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#QuestionSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.QuestionSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A container for holding <a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">Question</span></code></a> objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>question_set</strong> (<em>list</em>) – list of questions</li>
+<li><strong>sub_id</strong> (<em>int</em>) – subject id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="QA.question.QuestionSet.questions">
+<code class="descname">questions</code><a class="headerlink" href="#QA.question.QuestionSet.questions" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list</em> – List of all questions in the QuestionSet</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="QA.question.QuestionSet.sub_id">
+<code class="descname">sub_id</code><a class="headerlink" href="#QA.question.QuestionSet.sub_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The subject id that the question set corresponds to</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="QA.question.QuestionSet.deserialize">
+<em class="property">static </em><code class="descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#QuestionSet.deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.QuestionSet.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deserializes a QuestionSet from a serialized file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – the path of the serialized file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">deserialized QuestionSet</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#QA.question.QuestionSet" title="QA.question.QuestionSet">QuestionSet</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="QA.question.QuestionSet.from_db">
+<em class="property">static </em><code class="descname">from_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#QuestionSet.from_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.QuestionSet.from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a QuestionSet using the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sub_id</strong> (<em>int</em>) – the subject ID to generate a QuestionSet for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The generated QuestionSet</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#QA.question.QuestionSet" title="QA.question.QuestionSet">QuestionSet</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="QA.question.QuestionSet.from_text">
+<em class="property">static </em><code class="descname">from_text</code><span class="sig-paren">(</span><em>answer_file</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#QuestionSet.from_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.QuestionSet.from_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a QuestionSet from a text file by matching up a question file and an answer file line-by-line</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_file</strong> (<em>str</em>) – the path of the file to use for questions</li>
+<li><strong>answer_file</strong> (<em>str</em>) – the path of the file to use for answers</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the generated QuestionSet</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#QA.question.QuestionSet" title="QA.question.QuestionSet">QuestionSet</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.question.QuestionSet.serialize">
+<code class="descname">serialize</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#QuestionSet.serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.QuestionSet.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializes a QuestionSet to a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> – path for where to serialize QuestionSet</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="QA.question.SQLError">
+<em class="property">exception </em><code class="descclassname">QA.question.</code><code class="descname">SQLError</code><a class="reference internal" href="../../_modules/QA/question.html#SQLError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.SQLError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error with connecting to SQL database</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.question.initialize">
+<code class="descclassname">QA.question.</code><code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes SpaCy</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.question.preprocess_db">
+<code class="descclassname">QA.question.</code><code class="descname">preprocess_db</code><span class="sig-paren">(</span><em>new_subjects_only=False</em>, <em>preprocess_everything=False</em>, <em>sub_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/question.html#preprocess_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.question.preprocess_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocesses new categories and new/deleted/modified entries from the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>new_subjects_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – True to only preprocess new subjects, False to also look for changes in existing subjects. Defaults to False</li>
+<li><strong>preprocess_everything</strong> (<em>bool</em><em>, </em><em>optional</em>) – True to preprocess everything, regardless of if it is new information or not. Defaults to False</li>
+<li><strong>sub_id</strong> (<em>int</em><em>, </em><em>optional</em>) – If provided, will update only a specific subject</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#QA.question.SQLError" title="QA.question.SQLError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SQLError</span></code></a> – If connecting to the database fails, database was never initialized, or sub_id is invalid. Check error message for more details.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.rest_server">
+<span id="qa-rest-server-module"></span><h2>QA.rest_server module<a class="headerlink" href="#module-QA.rest_server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="QA.rest_server.QA">
+<em class="property">class </em><code class="descclassname">QA.rest_server.</code><code class="descname">QA</code><a class="reference internal" href="../../_modules/QA/rest_server.html#QA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.rest_server.QA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<dl class="attribute">
+<dt id="QA.rest_server.QA.endpoint">
+<code class="descname">endpoint</code><em class="property"> = 'qa'</em><a class="headerlink" href="#QA.rest_server.QA.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="QA.rest_server.QA.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/rest_server.html#QA.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.rest_server.QA.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="QA.rest_server.QA.mediatypes">
+<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#QA.rest_server.QA.mediatypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="QA.rest_server.QA.methods">
+<code class="descname">methods</code><em class="property"> = ['GET']</em><a class="headerlink" href="#QA.rest_server.QA.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.rest_server.ask_question">
+<code class="descclassname">QA.rest_server.</code><code class="descname">ask_question</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/rest_server.html#ask_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.rest_server.ask_question" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="QA.rest_server.get_questions">
+<code class="descclassname">QA.rest_server.</code><code class="descname">get_questions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/rest_server.html#get_questions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.rest_server.get_questions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="QA.rest_server.preprocess_everything">
+<code class="descclassname">QA.rest_server.</code><code class="descname">preprocess_everything</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/rest_server.html#preprocess_everything"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.rest_server.preprocess_everything" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-QA.test_server">
+<span id="qa-test-server-module"></span><h2>QA.test_server module<a class="headerlink" href="#module-QA.test_server" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="QA.test_server.mainPage">
+<code class="descclassname">QA.test_server.</code><code class="descname">mainPage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/test_server.html#mainPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.test_server.mainPage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-QA.sql">
+<span id="qa-sql-module"></span><h2>QA.sql module<a class="headerlink" href="#module-QA.sql" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="QA.sql.connect">
+<code class="descclassname">QA.sql.</code><code class="descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/sql.html#connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.sql.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to connect to the database based on the values in config.py</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if successful</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.sql.connect_to_db">
+<code class="descclassname">QA.sql.</code><code class="descname">connect_to_db</code><span class="sig-paren">(</span><em>db</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/sql.html#connect_to_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.sql.connect_to_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to a given database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>db</strong> (<em>str</em>) – database address</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if successfully connected, False otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>connect_to_db(‘mysql://root:password&#64;localhost:3306/database’)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.sql.get_questions">
+<code class="descclassname">QA.sql.</code><code class="descname">get_questions</code><span class="sig-paren">(</span><em>sub_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/sql.html#get_questions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.sql.get_questions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of questions/answers for a particular subject id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sub_id</strong> (<em>int</em>) – the subject id to get questions for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of results in format [faq_question, vid_script]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sqlalchemy.ResultProxy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.sql.get_subjects">
+<code class="descclassname">QA.sql.</code><code class="descname">get_subjects</code><span class="sig-paren">(</span><em>sub_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/sql.html#get_subjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.sql.get_subjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns either a list of subjects or the specifics of a single subject</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sub_id</strong> (<em>int</em><em>, </em><em>optional</em>) – the subject id to get information on</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of results in format [sub_id, sub_name]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sqlalchemy.ResultProxy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.sql.initialize">
+<code class="descclassname">QA.sql.</code><code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/sql.html#initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.sql.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the database and database tables</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>QA.ExcelAutomation module<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-QA.ExcelAutomation"></span><dl class="function">
+<dt>
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">confidence_analysis</code><span class="sig-paren">(</span><em>cutOff</em>, <em>correctConf</em>, <em>incorrectConf</em>, <em>nonExistantConf</em>, <em>sign=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#confidence_analysis"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>used to help determine the ideal confidence based on a set of responses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cutOff</strong> (<em>float</em>) – confidence cutoff</li>
+<li><strong>correctConf</strong> (<em>list</em>) – list of confidence values for correct answers as floats</li>
+<li><strong>incorrectConf</strong> (<em>list</em>) – list of confidence values for incorrect answers as floats</li>
+<li><strong>nonExistantConf</strong> (<em>list</em>) – list of confidence values for nonexistance answers as floats</li>
+<li><strong>sign</strong> (<em>int</em>) – 1 or -1 (-1 is an option because scipy has minimize but not maximize)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">accuracy of confidences</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">get_accuracies</code><span class="sig-paren">(</span><em>cutOff</em>, <em>correctConf</em>, <em>incorrectConf</em>, <em>nonExistantConf</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#get_accuracies"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>generates the potential accuracy for a set of responses based on a confidence cutoff</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cutOff</strong> (<em>float</em>) – confidence cutoff to check</li>
+<li><strong>correctConf</strong> (<em>list</em>) – list of confidence values for correct answers as floats</li>
+<li><strong>incorrectConf</strong> (<em>list</em>) – list of confidence values for incorrect answers as floats</li>
+<li><strong>nonExistantConf</strong> (<em>list</em>) – list of confidence values for nonexistance answers as floats</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary with keys “Existing Accuracy” and “Non Existant Accuracy”</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">get_answer</code><span class="sig-paren">(</span><em>userQuestion</em>, <em>method</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#get_answer"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Gets a matching method’s answer to a particular question</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>userQuestion</strong> (<em>str</em>) – question to match</li>
+<li><strong>method</strong> (<a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><em>QA.qa.NLPMethod</em></a>) – matching method to use</li>
+<li><strong>category</strong> (<em>str</em>) – “frog” or “smv”</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">matched question, matched answer</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">QA.ExcelAutomation.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/ExcelAutomation.html#main"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Run automated tests</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.TreeUtility">
+<span id="qa-treeutility-module"></span><h2>QA.TreeUtility module<a class="headerlink" href="#module-QA.TreeUtility" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="QA.TreeUtility.dt">
+<code class="descclassname">QA.TreeUtility.</code><code class="descname">dt</code><em class="property"> = DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=4,             max_features=None, max_leaf_nodes=None,             min_impurity_decrease=0.0, min_impurity_split=None,             min_samples_leaf=1, min_samples_split=40,             min_weight_fraction_leaf=0.0, presort=False, random_state=52,             splitter='best')</em><a class="headerlink" href="#QA.TreeUtility.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decision tree classifier model</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.TreeUtility.gen_tree">
+<code class="descclassname">QA.TreeUtility.</code><code class="descname">gen_tree</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/TreeUtility.html#gen_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.TreeUtility.gen_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates data for decision tree <a class="reference internal" href="#QA.TreeUtility.dt" title="QA.TreeUtility.dt"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.TreeUtility.dt</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fileName</strong> (<em>str</em>) – file name to use to generate tree (not path)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.TreeUtility.main">
+<code class="descclassname">QA.TreeUtility.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/TreeUtility.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.TreeUtility.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main method</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="QA.TreeUtility.score_tree">
+<code class="descclassname">QA.TreeUtility.</code><code class="descname">score_tree</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/TreeUtility.html#score_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.TreeUtility.score_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scores <a class="reference internal" href="#QA.TreeUtility.dt" title="QA.TreeUtility.dt"><code class="xref any py py-data docutils literal notranslate"><span class="pre">QA.TreeUtility.dt</span></code></a> based on another set of data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fileName</strong> (<em>str</em>) – file to use to test tree</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">score for tree</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="QA.TreeUtility.sv">
+<code class="descclassname">QA.TreeUtility.</code><code class="descname">sv</code><em class="property"> = SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,   decision_function_shape='ovr', degree=3, gamma='auto', kernel='sigmoid',   max_iter=-1, probability=False, random_state=None, shrinking=True,   tol=0.001, verbose=False)</em><a class="headerlink" href="#QA.TreeUtility.sv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support vector classification model</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA.unit_tests">
+<span id="qa-unit-tests-module"></span><h2>QA.unit_tests module<a class="headerlink" href="#module-QA.unit_tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="QA.unit_tests.ConnectTest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">ConnectTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#ConnectTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.ConnectTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests connection to database in <a class="reference internal" href="#module-QA.sql" title="QA.sql"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">QA.sql</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.ConnectTest.testFail">
+<code class="descname">testFail</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#ConnectTest.testFail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.ConnectTest.testFail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests invalid connection in <a class="reference internal" href="#QA.sql.connect_to_db" title="QA.sql.connect_to_db"><code class="xref any py py-func docutils literal notranslate"><span class="pre">QA.sql.connect_to_db</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.MockNLPMethod">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">MockNLPMethod</code><a class="reference internal" href="../../_modules/QA/unit_tests.html#MockNLPMethod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.MockNLPMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">qa.NLPMethod</span></code></p>
+<p>Mock <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a> for <a class="reference internal" href="#QA.unit_tests.NLPMethodTest" title="QA.unit_tests.NLPMethodTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.unit_tests.NLPMethodTest</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.MockNLPMethod.match_prob">
+<code class="descname">match_prob</code><span class="sig-paren">(</span><em>question1</em>, <em>question2</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#MockNLPMethod.match_prob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.MockNLPMethod.match_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the probability that two questions are a match. Abstract method of <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a>, override in any
+subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question1</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – user inputted question</li>
+<li><strong>question2</strong> (<a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><em>question.Question</em></a>) – the existing question being compared against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">probability of the questions being a correct match</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.MockQuestion">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">MockQuestion</code><span class="sig-paren">(</span><em>q</em>, <em>a</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#MockQuestion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.MockQuestion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mock <a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.question.Question</span></code></a> for <a class="reference internal" href="#QA.unit_tests.NLPMethodTest" title="QA.unit_tests.NLPMethodTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.unit_tests.NLPMethodTest</span></code></a> with just question and answer fields</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.MockSigWordSet">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">MockSigWordSet</code><span class="sig-paren">(</span><em>q</em>, <em>a</em>, <em>sig_word_set</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#MockSigWordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.MockSigWordSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mock <a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.question.Question</span></code></a> with sig_word_set for <a class="reference internal" href="#QA.unit_tests.NLPMethodTest" title="QA.unit_tests.NLPMethodTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.unit_tests.NLPMethodTest</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.NLPMethodTest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">NLPMethodTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests <a class="reference internal" href="#QA.qa.NLPMethod" title="QA.qa.NLPMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.NLPMethod</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.NLPMethodTest.testExact">
+<code class="descname">testExact</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest.testExact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest.testExact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.Exact" title="QA.qa.Exact"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.Exact</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.NLPMethodTest.testGenResults">
+<code class="descname">testGenResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest.testGenResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest.testGenResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.NLPMethod.gen_results" title="QA.qa.NLPMethod.gen_results"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.qa.NLPMethod.gen_results</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.NLPMethodTest.testGenResultsNoAnswer">
+<code class="descname">testGenResultsNoAnswer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest.testGenResultsNoAnswer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest.testGenResultsNoAnswer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.NLPMethod.gen_results" title="QA.qa.NLPMethod.gen_results"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.qa.NLPMethod.gen_results</span></code></a> when there is no answer matched</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.NLPMethodTest.testRunMethod">
+<code class="descname">testRunMethod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest.testRunMethod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest.testRunMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.NLPMethod.run_method" title="QA.qa.NLPMethod.run_method"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.qa.NLPMethod.run_method</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.NLPMethodTest.testSynset">
+<code class="descname">testSynset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#NLPMethodTest.testSynset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.NLPMethodTest.testSynset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.SynsetMatch" title="QA.qa.SynsetMatch"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.qa.SynsetMatch</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.QATest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">QATest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QATest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QATest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="QA.unit_tests.QATest.testGetQuestionSets">
+<code class="descname">testGetQuestionSets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QATest.testGetQuestionSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QATest.testGetQuestionSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.qa.get_question_sets" title="QA.qa.get_question_sets"><code class="xref any py py-func docutils literal notranslate"><span class="pre">QA.qa.get_question_sets</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.QuestionSetTest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">QuestionSetTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionSetTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionSetTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests <a class="reference internal" href="#QA.question.QuestionSet" title="QA.question.QuestionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.question.QuestionSet</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.QuestionSetTest.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionSetTest.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionSetTest.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up tests with test_files/questions.txt and test_files/answers.txt</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.QuestionSetTest.testDeserialize">
+<code class="descname">testDeserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionSetTest.testDeserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionSetTest.testDeserialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>tests <a class="reference internal" href="#QA.question.QuestionSet.deserialize" title="QA.question.QuestionSet.deserialize"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.question.QuestionSet.deserialize</span></code></a> and <a class="reference internal" href="#QA.question.QuestionSet.serialize" title="QA.question.QuestionSet.serialize"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.question.QuestionSet.serialize</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.QuestionSetTest.testFromFile">
+<code class="descname">testFromFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionSetTest.testFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionSetTest.testFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.question.QuestionSet.from_text" title="QA.question.QuestionSet.from_text"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.question.QuestionSet.from_text</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.QuestionSetTest.testPreprocessNotConnected">
+<code class="descname">testPreprocessNotConnected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionSetTest.testPreprocessNotConnected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionSetTest.testPreprocessNotConnected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.question.preprocess_db" title="QA.question.preprocess_db"><code class="xref any py py-func docutils literal notranslate"><span class="pre">QA.question.preprocess_db</span></code></a> when database is not connected</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.QuestionTest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">QuestionTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests <a class="reference internal" href="#QA.question.Question" title="QA.question.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">QA.question.Question</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.QuestionTest.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionTest.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionTest.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up tests</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.QuestionTest.testQuestionInit">
+<code class="descname">testQuestionInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#QuestionTest.testQuestionInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.QuestionTest.testQuestionInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests initialization</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="QA.unit_tests.StaticTest">
+<em class="property">class </em><code class="descclassname">QA.unit_tests.</code><code class="descname">StaticTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#StaticTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.StaticTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests several static parts of <a class="reference internal" href="#module-QA.question" title="QA.question"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">QA.question</span></code></a></p>
+<dl class="method">
+<dt id="QA.unit_tests.StaticTest.testProcessText">
+<code class="descname">testProcessText</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#StaticTest.testProcessText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.StaticTest.testProcessText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.question.Question.process_text" title="QA.question.Question.process_text"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.question.Question.process_text</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.StaticTest.testRemoveStopwords">
+<code class="descname">testRemoveStopwords</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#StaticTest.testRemoveStopwords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.StaticTest.testRemoveStopwords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <a class="reference internal" href="#QA.question.Question.remove_stopwords" title="QA.question.Question.remove_stopwords"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">QA.question.Question.remove_stopwords</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="QA.unit_tests.StaticTest.testSpacy">
+<code class="descname">testSpacy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/QA/unit_tests.html#StaticTest.testSpacy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#QA.unit_tests.StaticTest.testSpacy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests spaCy is properly loaded</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-QA">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-QA" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">QA package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-QA.ExcelAutomation">QA.ExcelAutomation module</a></li>
+<li><a class="reference internal" href="#module-QA.config">QA.config module</a></li>
+<li><a class="reference internal" href="#module-QA.qa">QA.qa module</a></li>
+<li><a class="reference internal" href="#module-QA.question">QA.question module</a></li>
+<li><a class="reference internal" href="#module-QA.rest_server">QA.rest_server module</a></li>
+<li><a class="reference internal" href="#module-QA.test_server">QA.test_server module</a></li>
+<li><a class="reference internal" href="#module-QA.sql">QA.sql module</a></li>
+<li><a class="reference internal" href="#id1">QA.ExcelAutomation module</a></li>
+<li><a class="reference internal" href="#module-QA.TreeUtility">QA.TreeUtility module</a></li>
+<li><a class="reference internal" href="#module-QA.unit_tests">QA.unit_tests module</a></li>
+<li><a class="reference internal" href="#module-QA">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/docs/source/QA.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Zach Brownlow, Christina Mara, Will Rea, Matt Rosenbloom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/docs/source/QA.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

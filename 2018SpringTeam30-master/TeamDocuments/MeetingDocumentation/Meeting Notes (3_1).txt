@@ -1,0 +1,17 @@
+3/1/2018
+
+Feedback on presentation:
+* people may get confused that we are talking about comparing lists of prepared questions
+* connect the bigger problem to the problem we are working on
+* what if I can't think of the frequently asked questions?
+* text content definition is given --> how do we mine that for possible questions?
+* known problem in Natural Language Processing
+* this doesn't go along with having answers be videos
+* tells the end users to fix things up
+* if people start asking questions and we can't find answers, lecture is bad. need to fix lecture.
+* getting into ai/human interaction matters
+* NLTK textbook goes into simple q/a matching
+
+Context of corporate training:
+* There may not be as many external questions in the corporate space
+* mini version of "the hammer"

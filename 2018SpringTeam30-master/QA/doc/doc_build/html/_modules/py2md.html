@@ -1,0 +1,244 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>py2md &#8212; SMV Question Matching  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for py2md</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;py2md.py - Simple docs generator for Python code documented to Google docstring standard.&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">strftime</span>
+
+
+<div class="viewcode-block" id="extract_code"><a class="viewcode-back" href="../docs/source/py2md.html#py2md.extract_code">[docs]</a><span class="k">def</span> <span class="nf">extract_code</span><span class="p">(</span><span class="n">end_mark</span><span class="p">,</span> <span class="n">current_str</span><span class="p">,</span> <span class="n">str_array</span><span class="p">,</span> <span class="n">line_num</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Extract a multi-line string from a string array, up to a specified end marker.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            end_mark (str): The end mark string to match for.</span>
+<span class="sd">            current_str (str): The first line of the string array.</span>
+<span class="sd">            str_array (list): An array of strings (lines).</span>
+<span class="sd">            line_num (int): The current offset into the array.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Extended string up to line with end marker.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">end_mark</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_str</span><span class="p">:</span>
+        <span class="n">reached_end</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">line_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">reached_end</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">next_line</span> <span class="o">=</span> <span class="n">str_array</span><span class="p">[</span><span class="n">line_num</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">end_mark</span> <span class="ow">in</span> <span class="n">next_line</span><span class="p">:</span>
+                <span class="n">reached_end</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">line_num</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">current_str</span> <span class="o">+=</span> <span class="n">next_line</span>
+    <span class="n">clean_str</span> <span class="o">=</span> <span class="n">current_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">end_mark</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;current_str&#39;</span><span class="p">:</span> <span class="n">clean_str</span><span class="p">,</span> <span class="s1">&#39;line_num&#39;</span><span class="p">:</span> <span class="n">line_num</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="process_file"><a class="viewcode-back" href="../docs/source/py2md.html#py2md.process_file">[docs]</a><span class="k">def</span> <span class="nf">process_file</span><span class="p">(</span><span class="n">pyfile_name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Process a Python source file with Google style docstring comments.</span>
+
+<span class="sd">    Reads file header comment, function definitions, function docstrings.</span>
+<span class="sd">    Returns dictionary encapsulation for subsequent writing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pyfile_name (str): file name to read.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary object containing summary comment, with a list of entries for each function.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Processing file: &#39;</span> <span class="o">+</span> <span class="n">pyfile_name</span><span class="p">)</span>
+
+    <span class="c1"># load the source file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pyfile_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fpyfile</span><span class="p">:</span>
+        <span class="n">pyfile_str</span> <span class="o">=</span> <span class="n">fpyfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="c1"># meta-doc for a source file</span>
+    <span class="n">file_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;source_file&#39;</span><span class="p">:</span> <span class="n">pyfile_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)}</span>
+
+    <span class="c1"># get file summary line at the top of the file</span>
+    <span class="k">if</span> <span class="n">pyfile_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&#39;&#39;&#39;&quot;</span><span class="p">):</span>
+        <span class="n">file_dict</span><span class="p">[</span><span class="s1">&#39;summary_comment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyfile_str</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">file_dict</span><span class="p">[</span><span class="s1">&#39;summary_comment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyfile_name</span>
+
+    <span class="n">file_dict</span><span class="p">[</span><span class="s1">&#39;functions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># find every function definition</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">pyfile_str</span><span class="p">:</span>
+        <span class="c1"># process definition</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;def &#39;</span><span class="p">):</span>
+            <span class="n">line_num</span> <span class="o">=</span> <span class="n">pyfile_str</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">fn_def</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+            <span class="n">fn_name</span> <span class="o">=</span> <span class="n">fn_def</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">function_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">fn_name</span><span class="p">}</span>
+            <span class="n">extract</span> <span class="o">=</span> <span class="n">extract_code</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">fn_def</span><span class="p">,</span> <span class="n">pyfile_str</span><span class="p">,</span> <span class="n">line_num</span><span class="p">)</span>
+            <span class="n">function_info</span><span class="p">[</span><span class="s1">&#39;definition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract</span><span class="p">[</span><span class="s1">&#39;current_str&#39;</span><span class="p">]</span>
+            <span class="c1"># process docstring</span>
+            <span class="n">line_num</span> <span class="o">=</span> <span class="n">extract</span><span class="p">[</span><span class="s1">&#39;line_num&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">doc_line</span> <span class="o">=</span> <span class="n">pyfile_str</span><span class="p">[</span><span class="n">line_num</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">doc_line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;    &#39;&#39;&#39;&quot;</span><span class="p">):</span>
+                <span class="n">comment_str</span> <span class="o">=</span> <span class="n">doc_line</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+                <span class="n">extract</span> <span class="o">=</span> <span class="n">extract_code</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;&#39;&#39;&quot;</span><span class="p">,</span> <span class="n">comment_str</span><span class="p">,</span> <span class="n">pyfile_str</span><span class="p">,</span> <span class="n">line_num</span><span class="p">)</span>
+                <span class="n">function_info</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract</span><span class="p">[</span><span class="s1">&#39;current_str&#39;</span><span class="p">]</span>
+            <span class="n">file_dict</span><span class="p">[</span><span class="s1">&#39;functions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function_info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">file_dict</span></div>
+
+
+<div class="viewcode-block" id="process_output"><a class="viewcode-back" href="../docs/source/py2md.html#py2md.process_output">[docs]</a><span class="k">def</span> <span class="nf">process_output</span><span class="p">(</span><span class="n">meta_file</span><span class="p">,</span> <span class="n">outfile_name</span><span class="p">,</span> <span class="n">code_links</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Create a markdown format documentation file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        meta_file (dict): Dictionary with documentation metadata.</span>
+<span class="sd">        outfile_name (str): Markdown file to write to.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Markdown title line</span>
+    <span class="n">doc_str</span> <span class="o">=</span> <span class="s1">&#39;# &#39;</span> <span class="o">+</span> <span class="n">meta_file</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">&#39;Generated by [py2md](https://github.com/gbowerman/py2md) on &#39;</span>
+    <span class="n">doc_str</span> <span class="o">+=</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+    <span class="c1"># Create a table of contents if more than one module (i.e. more than one</span>
+    <span class="c1"># source file)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meta_file</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">doc_str</span> <span class="o">+=</span> <span class="s2">&quot;## Contents</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">chapter_num</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">meta_doc</span> <span class="ow">in</span> <span class="n">meta_file</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">]:</span>
+            <span class="n">chapter_name</span> <span class="o">=</span> <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;summary_comment&#39;</span><span class="p">]</span>
+            <span class="n">chapter_link</span> <span class="o">=</span> <span class="n">chapter_name</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">doc_str</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">chapter_num</span><span class="p">)</span> <span class="o">+</span> \
+                <span class="s1">&#39;. [&#39;</span> <span class="o">+</span> <span class="n">chapter_name</span> <span class="o">+</span> <span class="s1">&#39;](#&#39;</span> <span class="o">+</span> <span class="n">chapter_link</span> <span class="o">+</span> <span class="s1">&#39;)</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">chapter_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+    <span class="c1"># Document each meta-file</span>
+    <span class="k">for</span> <span class="n">meta_doc</span> <span class="ow">in</span> <span class="n">meta_file</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">]:</span>
+        <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">&#39;## &#39;</span> <span class="o">+</span> <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;summary_comment&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">&#39;[source file](&#39;</span> <span class="o">+</span> <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;source_file&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">for</span> <span class="n">function_info</span> <span class="ow">in</span> <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;functions&#39;</span><span class="p">]:</span>
+            <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">&#39;### &#39;</span> <span class="o">+</span> <span class="n">function_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">doc_str</span> <span class="o">+=</span> <span class="n">function_info</span><span class="p">[</span><span class="s1">&#39;definition&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="s1">&#39;comments&#39;</span> <span class="ow">in</span> <span class="n">function_info</span><span class="p">:</span>
+                <span class="n">doc_str</span> <span class="o">+=</span> <span class="s1">&#39;```</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">function_info</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">```</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+    <span class="c1"># write the markdown to file</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing file: &#39;</span> <span class="o">+</span> <span class="n">outfile_name</span><span class="p">)</span>
+    <span class="n">out_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc_str</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../docs/source/py2md.html#py2md.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;Main routine.&#39;&#39;&#39;</span>
+    <span class="c1"># validate command line arguments</span>
+    <span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--sourcedir&#39;</span><span class="p">,</span> <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Source folder containing python files.&#39;</span><span class="p">)</span>
+    <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--docfile&#39;</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of markdown file to write output to.&#39;</span><span class="p">)</span>
+    <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--projectname&#39;</span><span class="p">,</span> <span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Project name (optional, otherwise sourcedir will be used).&#39;</span><span class="p">)</span>
+    <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--codelinks&#39;</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Include links to source files (optional).&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">arg_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">source_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">sourcedir</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">docfile</span>
+    <span class="n">code_links</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">codelinks</span>
+    <span class="n">proj_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">projectname</span>
+    <span class="k">if</span> <span class="n">proj_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">proj_name</span> <span class="o">=</span> <span class="n">source_dir</span>
+
+    <span class="c1"># main document dictionary</span>
+    <span class="n">meta_doc</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="n">proj_name</span> <span class="o">+</span> <span class="s1">&#39; Technical Reference Guide&#39;</span><span class="p">}</span>
+    <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># process each file</span>
+    <span class="k">for</span> <span class="n">source_file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">source_dir</span> <span class="o">+</span> <span class="s1">&#39;/*.py&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">source_file</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping: &#39;</span> <span class="o">+</span> <span class="n">source_file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">file_meta_doc</span> <span class="o">=</span> <span class="n">process_file</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span>
+        <span class="n">meta_doc</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_meta_doc</span><span class="p">)</span>
+
+    <span class="c1"># create output file</span>
+    <span class="n">process_output</span><span class="p">(</span><span class="n">meta_doc</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">code_links</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Zach Brownlow, Christina Mara, Will Rea, Matt Rosenbloom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

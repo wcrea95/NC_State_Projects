@@ -1,0 +1,7 @@
+py2md module
+============
+
+.. automodule:: py2md
+    :members:
+    :undoc-members:
+    :show-inheritance:
