@@ -45,7 +45,7 @@ pathlib==1.0.1
 plac==0.9.6
 pluggy==0.6.0
 preshed==1.0.0
-py==1.5.3
+py==1.10.0
 Pygments==2.2.0
 pyparsing==2.2.0
 pyreadline==2.1
